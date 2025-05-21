@@ -189,7 +189,15 @@ a:hover {
 li{
     list-style: none;
 }
-
+@media (max-width: 1400px) {
+    #tiempo {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin: 1em auto;
+        max-width: 600px;
+    }
+}
 /* Diseño Responsive */
 @media (max-width: 768px) {
     header {

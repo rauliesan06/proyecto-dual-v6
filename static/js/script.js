@@ -5,22 +5,10 @@ usuario.innerHTML = dni;
 let provincia = localStorage.getItem("provincia");
 
 document.addEventListener('DOMContentLoaded', () => {
-    obtenerProvincia();
     obtenerTiempo();
 });
 
-function obtenerProvincia(){
-    fetch('http://localhost:8000/obtener_provincia/?dni='+dni)
-    .then(response => {
-        if(!response.ok){
-            alert("No se ha podido cargar la provincia del usuario");
-        }
-        return response.json();
-    })
-    .then(provincia =>{
-        localStorage.setItem("provincia", provincia);
-    })
-}
+
 
 function obtenerTiempo(){
     let tiempo = document.getElementById('tiempo');

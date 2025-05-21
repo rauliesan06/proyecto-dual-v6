@@ -9,9 +9,23 @@ function iniciarSesion(event){
     .then(response =>{
         if(response.ok){
             localStorage.setItem("dni", dni);
-            window.location.href = "index.html";
+            obtenerProvincia(dni);
         } else{
             alert('Usuario o Contraseña Incorrecta.')
         }
+    })
+}
+
+function obtenerProvincia(dni){
+    fetch('http://localhost:8000/obtener_provincia/?dni='+dni)
+    .then(response => {
+        if(!response.ok){
+            alert("No se ha podido cargar la provincia del usuario");
+        }
+        return response.json();
+    })
+    .then(provincia =>{
+        localStorage.setItem("provincia", provincia);
+        window.location.href = "index.html";
     })
 }
