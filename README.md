@@ -2,7 +2,7 @@
 GestBank es una aplicación web de simulación bancaria que permite gestionar cuentas, realizar movimientos financieros y operaciones tipo Bizum.
 
 # 📄 Descripción
-Este proyecto es una aplicación web construida con FastAPI como backend, utilizando MySQL como base de datos para manejar los datos. La aplicación permite registrar e iniciar sesión, y a cada usuario realizar operaciones como crear cuentas, realizar pagos mediante Bizum, consultar transacciones, y eliminar cuentas. El frontend está construido con HTML, CSS y JavaScript.
+Este proyecto es una aplicación web construida con FastAPI como backend, utilizando MySQL como base de datos para manejar los datos. La aplicación permite registrarse e iniciar sesión, y a cada usuario realizar operaciones como crear cuentas, realizar pagos mediante Bizum, consultar transacciones, y eliminar cuentas. El frontend está construido con HTML, CSS y JavaScript.
 El proyecto también incluye características como la validación de datos y la gestión de las bases de datos mediante SQLAlchemy. Se utiliza Uvicorn como servidor ASGI para ejecutar la aplicación en un entorno local y en la nube.
 
 # 🧩 Funcionalidades
@@ -26,13 +26,23 @@ Solicitar dinero (reduce el saldo)
 Consultar historial de transacciones
 
 
+Filtrado de movimientos:
+
+Botón de mostrar Bizums (muestra los Bizums(movimientos) de cada cuenta)
+
+
+Descargas de los movimientos:
+
+Se descargan los movimientos en un archivo csv
+
+
 Interfaz de usuario:
 
 Versión 1 (gestión en memoria interna)
 Versión 2 (almacenamiento en base de datos)
 Versión 3 (carga de cuentas a la base de datos a partir de un csv)
 Versión 4 (creación de usuarios, inicio de sesión, gestión de cuentas y bizums de cada usuario por separado, cerrar sesión)
-
+Versión 5 (implementación del filtrado de movimientos de cada cuenta, y la descarga de movimientos en un archivo csv)
 
 # 🧰 Tecnologías utilizadas
 

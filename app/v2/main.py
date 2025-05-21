@@ -4,10 +4,11 @@ from app.v2.database import SessionLocal, engine
 from app.v2.models import Base, Usuario, Cuenta, Bizum
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi.middleware.cors import CORSMiddleware
-import requests
+from typing import List
+from pydantic import BaseModel
+
 
 Base.metadata.create_all(bind=engine)
-
 
 app = FastAPI()
 
@@ -30,37 +31,6 @@ def get_db():
     finally:
         db.close()
 
-API = "AIzaSyDGGpPnDvMwlDBwRWu9Ngi_Sut6uoT2mvg"
-def consultar_gemini(pregunta: str) -> str:
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key={API}"
-    headers = {"Content-Type": "application/json"}
-    payload = {
-        "contents": [
-            {
-                "parts": [
-                    {"text": pregunta}
-                ]
-            }
-        ]
-    }
-
-    try:
-        response = requests.post(url, headers=headers, json=payload)
-        if response.status_code == 200:
-            data = response.json()
-            return data["candidates"][0]["content"]["parts"][0]["text"]
-        else:
-            return f"Error {response.status_code}: {response.text}"
-    except Exception as e:
-        return f"Excepción al consultar Gemini: {str(e)}"
-
-# Ruta de API en FastAPI
-@app.get("/chatgpt")
-def chatgpt(pregunta: str):
-    respuesta = consultar_gemini(pregunta)
-    return {"respuesta": respuesta}
-
-
 @app.post("/crear_usuario/")
 def crear_usuario(dni: str, password: str, db: Session = Depends(get_db)):
     try:
@@ -71,7 +41,7 @@ def crear_usuario(dni: str, password: str, db: Session = Depends(get_db)):
             db.refresh(usuario)
             return usuario
         else:
-            return {"mensaje":"Error el dni del usuario no es válido"}
+            raise HTTPException(status_code=400, detail="Error el dni del usuario no es válido")
     except SQLAlchemyError:
         raise HTTPException(status_code=500, detail="Error con la base de datos")
 
@@ -81,7 +51,7 @@ def iniciar_sesion(dni: str, password:str, db: Session = Depends(get_db)):
     if usuario:
         return usuario
     else:
-        raise HTTPException(status_code=401, detail="Error al iniciar sesión")
+        raise HTTPException(status_code=400, detail="Error al iniciar sesión")
 
 @app.post("/crear_cuenta/")
 def crear_cuenta(dni: str, iban: str, saldo: float = 0.0, db: Session = Depends(get_db)):
@@ -124,6 +94,10 @@ def listar_bizums(dni: str, db: Session = Depends(get_db)):
         ibans.append(cuenta.iban)
     return db.query(Bizum).filter(Bizum.cuenta_id.in_(ibans)).all()
 
+@app.get("/bizums_cuenta/")
+def listar_bizums_cuenta(iban: str, db: Session = Depends(get_db)):
+    return db.query(Bizum).filter(Bizum.cuenta_id == iban).all()
+
 @app.post("/eliminar_cuenta/") # No hace falta insertar el dni ya que en la aplicación solo se mostrarán las cuentas del usuario
 def eliminar_cuenta(iban: str, db: Session = Depends(get_db)):
     cuenta = db.query(Cuenta).filter(Cuenta.iban == iban).first()
@@ -158,3 +132,19 @@ def importar_csv(dni: str, db: Session = Depends(get_db)):
         db.add(cuenta)
     db.commit()
     return {"mensaje":"Importación completada"}
+
+class BizumBase(BaseModel):
+    cuenta_id: str
+    tipo_operacion: str
+    monto: float
+    fecha: str
+
+@app.post("/descargar_movimientos/")
+def descargar_movimientos(bizums: List[BizumBase]):
+    nombre_archivo = "bizums.csv"
+    f = open(nombre_archivo, "w")
+    f.write("Cuenta, Tipo, Monto, Fecha\n")
+    for bizum in bizums:
+        f.write(f"{bizum.cuenta_id}, {bizum.tipo_operacion}, {bizum.monto}, {bizum.fecha}\n")
+    f.close()
+    return {"mensaje":"Descarga completada"}
