@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
 function obtenerTiempo(){
     let tiempo = document.getElementById('tiempo');
 
