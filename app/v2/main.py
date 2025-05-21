@@ -6,6 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from pydantic import BaseModel
+import httpx
 
 
 Base.metadata.create_all(bind=engine)
@@ -32,10 +33,10 @@ def get_db():
         db.close()
 
 @app.post("/crear_usuario/")
-def crear_usuario(dni: str, password: str, db: Session = Depends(get_db)):
+def crear_usuario(dni: str, password: str, provincia: str, db: Session = Depends(get_db)):
     try:
         if len(dni) == 9:
-            usuario = Usuario(dni=dni, password=password)
+            usuario = Usuario(dni=dni, password=password, provincia=provincia)
             db.add(usuario)
             db.commit()
             db.refresh(usuario)
@@ -148,3 +149,29 @@ def descargar_movimientos(bizums: List[BizumBase]):
         f.write(f"{bizum.cuenta_id}, {bizum.tipo_operacion}, {bizum.monto}, {bizum.fecha}\n")
     f.close()
     return {"mensaje":"Descarga completada"}
+
+
+@app.get("/obtener_provincia/")
+def obtener_provincia(dni: str, db: Session = Depends(get_db)):
+    usuario = db.query(Usuario).filter(Usuario.dni == dni).first()
+    provincia: str = usuario.provincia
+    return provincia.capitalize()
+
+API_KEY = "LANB4DBWB8VXGPNY3DX4LN4ED"
+
+@app.get("/mostrar_tiempo/")
+def mostrar_tiempo(localidad: str):
+    url = f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{localidad}?unitGroup=metric&key={API_KEY}&contentType=json"
+    
+    response = httpx.get(url)
+    data = response.json()
+    
+    dia_actual = data["days"][0]  # Primer día de la predicción
+
+    return {
+        "localidad": data["resolvedAddress"],
+        "fecha": dia_actual["datetime"],
+        "temperatura_max": dia_actual["tempmax"],
+        "temperatura_min": dia_actual["tempmin"],
+        "descripcion": dia_actual.get("description", "No disponible")
+    }

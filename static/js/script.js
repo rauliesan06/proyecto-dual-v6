@@ -2,8 +2,52 @@ let dni = localStorage.getItem("dni");
 let usuario = document.getElementById('usuario');
 usuario.innerHTML = dni;
 
+let provincia = localStorage.getItem("provincia");
+
+document.addEventListener('DOMContentLoaded', () => {
+    obtenerProvincia();
+    obtenerTiempo();
+});
+
+function obtenerProvincia(){
+    fetch('http://localhost:8000/obtener_provincia/?dni='+dni)
+    .then(response => {
+        if(!response.ok){
+            alert("No se ha podido cargar la provincia del usuario");
+        }
+        return response.json();
+    })
+    .then(provincia =>{
+        localStorage.setItem("provincia", provincia);
+    })
+}
+
+function obtenerTiempo(){
+    let tiempo = document.getElementById('tiempo');
+
+    fetch('http://localhost:8000/mostrar_tiempo/?localidad='+provincia)
+    .then(response => {
+        if(!response.ok){
+            alert("Error al llamar a la API");
+        }
+        return response.json();
+    })
+    .then(data =>{
+        let infoTiempo = "<ul>";
+        infoTiempo += "<li><strong>Localidad: </strong>"+data.localidad+"</li>";
+        infoTiempo += "<li><strong>Fecha: </strong>"+data.fecha+"</li>";
+        infoTiempo += "<li><strong>Temperatura Max: </strong>"+data.temperatura_max+"Cº</li>";
+        infoTiempo += "<li><strong>Temperatura Min: </strong>"+data.temperatura_min+"Cº</li>";
+        infoTiempo += "<li><strong>Descripción: </strong>"+data.descripcion+"</li></ul>";
+
+        tiempo.innerHTML += infoTiempo;
+        localStorage.setItem("infoTiempo", infoTiempo);
+        })
+}
+
 function cerrarSesion() {
     localStorage.removeItem("dni");
+    localStorage.removeItem("provincia");
     window.location.href = "login.html";
 }
 

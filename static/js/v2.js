@@ -12,7 +12,15 @@ function cerrarSesion() {
 document.addEventListener('DOMContentLoaded', () => {
     cargarIBANes('ibanBizum');
     cargarIBANes('ibanCuenta');
+    mostrarTiempo();
 });
+
+function mostrarTiempo(){
+    let tiempo = document.getElementById("tiempo");
+    let infoTiempo = localStorage.getItem("infoTiempo");
+
+    tiempo.innerHTML += infoTiempo;
+}
 
 // Función genérica para cargar IBANs en un <select>
 function cargarIBANes(selectId) {

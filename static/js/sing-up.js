@@ -2,6 +2,7 @@ document.getElementById('formRegisUsuario').addEventListener('submit', registrar
 function registrarUsuario(event){
     let dni = document.getElementById('dni').value;
     let password = document.getElementById('password').value;
+    let provincia = document.getElementById('provincia').value;
 
     event.preventDefault();
 
@@ -10,7 +11,7 @@ function registrarUsuario(event){
         return;
     }
 
-    fetch('http://localhost:8000/crear_usuario/?dni='+dni+'&password='+password, {
+    fetch('http://localhost:8000/crear_usuario/?dni='+dni+'&password='+password+'&provincia='+provincia, {
         method: 'POST'
     })
     .then(response =>{
@@ -18,6 +19,7 @@ function registrarUsuario(event){
             alert('Usuario registrado correctamente.')
             document.getElementById('dni').value = "";
             document.getElementById('password').value = "";
+            document.getElementById('provincia').value = "";
         } else{
             alert('Ya existe un usuario con el mismo identificador.')
         }

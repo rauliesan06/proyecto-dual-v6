@@ -8,6 +8,7 @@ class Usuario(Base):
     id = Column(Integer, primary_key=True, index=True)
     dni = Column(String(9), unique=True, nullable=False)
     password = Column(String(50), nullable=False)
+    provincia = Column(String(50), nullable=False)
 
     cuentas = relationship("Cuenta", back_populates="usuario")
 

@@ -172,6 +172,24 @@ a:hover {
     color: #2b7cb8;
 }
 
+#tiempo{
+    background: white;
+    border-radius: 8px;
+    width: auto;
+    padding: 1em;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    top: 12em;
+    right: 2em;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+li{
+    list-style: none;
+}
+
 /* Diseño Responsive */
 @media (max-width: 768px) {
     header {
