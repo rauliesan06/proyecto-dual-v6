@@ -27,13 +27,15 @@ Consultar historial de transacciones
 
 
 Filtrado de movimientos:
-
 Botón de mostrar Bizums (muestra los Bizums(movimientos) de cada cuenta)
 
 
 Descargas de los movimientos:
-
 Se descargan los movimientos en un archivo csv
+
+
+Consumo de la weather API:
+Aparece en la creación de cuentas y en la página gestión de cuentas v2 de forma automática la información climatológica de la provincia que se seleccionó a la hora de registrar el usuario 
 
 
 Interfaz de usuario:
