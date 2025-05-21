@@ -43,6 +43,7 @@ Versión 2 (almacenamiento en base de datos)
 Versión 3 (carga de cuentas a la base de datos a partir de un csv)
 Versión 4 (creación de usuarios, inicio de sesión, gestión de cuentas y bizums de cada usuario por separado, cerrar sesión)
 Versión 5 (implementación del filtrado de movimientos de cada cuenta, y la descarga de movimientos en un archivo csv)
+Versión 6 (consumo de una weather API, y se muestran los datos del usuario)
 
 # 🧰 Tecnologías utilizadas
 
@@ -50,6 +51,7 @@ Backend: FastAPI, SQLAlchemy
 Base de datos: MySQL (con pymysql)
 Frontend: HTML, CSS, JavaScript
 Servidor: Uvicorn
+API: VisualCrossing
 
 # 🛠️ Instalación de dependencias
 pip install -r requirements.txt
