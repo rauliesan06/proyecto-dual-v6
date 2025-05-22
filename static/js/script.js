@@ -5,31 +5,15 @@ usuario.innerHTML = dni;
 let provincia = localStorage.getItem("provincia");
 
 document.addEventListener('DOMContentLoaded', () => {
-    obtenerTiempo();
+    mostrarTiempo();
 });
 
 
-function obtenerTiempo(){
-    let tiempo = document.getElementById('tiempo');
+function mostrarTiempo(){
+    let tiempo = document.getElementById("tiempo");
+    let infoTiempo = localStorage.getItem("infoTiempo");
 
-    fetch('http://localhost:8000/mostrar_tiempo/?localidad='+provincia)
-    .then(response => {
-        if(!response.ok){
-            alert("Error al llamar a la API");
-        }
-        return response.json();
-    })
-    .then(data =>{
-        let infoTiempo = "<ul>";
-        infoTiempo += "<li><strong>Localidad: </strong>"+data.localidad+"</li>";
-        infoTiempo += "<li><strong>Fecha: </strong>"+data.fecha+"</li>";
-        infoTiempo += "<li><strong>Temperatura Max: </strong>"+data.temperatura_max+"Cº</li>";
-        infoTiempo += "<li><strong>Temperatura Min: </strong>"+data.temperatura_min+"Cº</li>";
-        infoTiempo += "<li><strong>Descripción: </strong>"+data.descripcion+"</li></ul>";
-
-        tiempo.innerHTML += infoTiempo;
-        localStorage.setItem("infoTiempo", infoTiempo);
-        })
+    tiempo.innerHTML += infoTiempo;
 }
 
 function cerrarSesion() {
