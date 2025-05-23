@@ -49,12 +49,6 @@ def registrar_movimiento(iban: str, tipo: str, cantidad: float):
         cuenta.saldo -= cantidad
     movimientos.append(movimiento)
     return {"mensaje":"Movimiento registrado correctamente"}
-#@app.post("/registrar_movimiento/")
-#def registrar_movimiento(iban: str, movimiento: Movimiento):
-#    if iban not in cuentas:
-#        raise HTTPException(status_code=400, detail="No existe una cuenta con ese iban")
-#    cuentas[iban].movimientos.append(movimiento)
-#    return {"mensaje":"Movimiento registrado correctamente"}
 
 @app.get("/mostrar_movimientos/")
 def mostrar_movimientos_cuenta():

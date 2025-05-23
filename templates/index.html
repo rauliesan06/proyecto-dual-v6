@@ -7,7 +7,7 @@
     <link rel="icon" href="../static/images/logo-web.png" type="image/x-icon">
     <link rel="stylesheet" href="../static/css/styles.css">
 </head>
-<body onload="">
+<body>
     <header>
         <h1><a href="index.html">GestBank</a></h1>
         <nav style="position: absolute; top: 2em; right: 2em; border-color: 1px white;">
@@ -42,8 +42,8 @@
             <br>
             <br>
             <label for="iban">IBAN</label>
-            <input type="text" id="iban" name="iban" required placeholder="ES000000000000000000">
-            <div id="ibanError" class="error-message">El IBAN debe comenzar con ES y tener 20 caracteres en total</div>
+            <input type="text" id="iban" name="iban" required placeholder="ES0000000000000000000000" maxlength="24">
+            <div id="ibanError" class="error-message">El IBAN debe comenzar con ES y tener 24 caracteres en total</div>
             <br>
             <br>
             <label for="saldo">Saldo</label>
