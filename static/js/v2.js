@@ -193,7 +193,7 @@ function verSaldoCuenta(){
     .then(cuenta => { // No hace falta hacer un forEach de data y después recorro cada cuenta porque daría error ya que
         let fila = ""; // el método en el backend solo devuelve un dato
         fila += '<tr><td>'+cuenta.iban+'</td>';
-        fila += '<td>'+cuenta.saldo+'</td></tr>';
+        fila += '<td>'+cuenta.saldo+'€</td></tr>';
         
         tabla.innerHTML = fila;
     })
